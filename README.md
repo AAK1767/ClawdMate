@@ -20,7 +20,7 @@ A Chrome extension that adds bulk downloading of course materials from [PESU Aca
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/mohitpaddhariya/ClawdMate.git
+   git clone https://github.com/AAK1767/ClawdMate.git
    ```
 2. Open Chrome and navigate to `chrome://extensions`
 3. Enable **Developer mode** (toggle in the top-right corner)
@@ -112,9 +112,12 @@ This project is licensed under the [MIT License](LICENSE). See [CONTRIBUTING](do
 
 ## Author
 
-**Mohit Paddhariya**
+**AAK1767**
+
+Forked from [PESUmate](https://github.com/mohitpaddhariya/PESUmate) by Mohit Paddhariya.
 
 ## Acknowledgments
 
+- Original project [PESUmate](https://github.com/mohitpaddhariya/PESUmate) by Mohit Paddhariya
 - [pdf-lib](https://pdf-lib.js.org/) by Andrew Dillon
 - [JSZip](https://stuk.github.io/jszip/) by Stuart Knightley

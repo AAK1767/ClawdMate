@@ -6,7 +6,7 @@ Thank you for considering contributing to ClawdMate! This document outlines how 
 
 ### Reporting bugs
 
-1. Check [existing issues](https://github.com/mohitpaddhariya/ClawdMate/issues) to avoid duplicates
+1. Check [existing issues](https://github.com/AAK1767/ClawdMate/issues) to avoid duplicates
 2. Open a new issue with:
    - A clear, descriptive title
    - Steps to reproduce the bug
@@ -38,7 +38,7 @@ Open an issue with the `enhancement` label. Describe:
 ## Development setup
 
 ```bash
-git clone https://github.com/mohitpaddhariya/ClawdMate.git
+git clone https://github.com/AAK1767/ClawdMate.git
 cd ClawdMate
 ```
 
