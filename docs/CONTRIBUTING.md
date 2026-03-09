@@ -30,7 +30,8 @@ Open an issue with the `enhancement` label. Describe:
    ```
 3. **Make your changes** — keep commits focused and atomic
 4. **Test** your changes:
-   - Load the extension in Chrome developer mode
+   - Run `./build.sh` (or `.\build.ps1`) to rebuild
+   - Load the extension in Chrome and/or Firefox developer mode
    - Verify on a live PESU Academy course page
    - Check the browser console for errors
 5. **Push** your branch and open a **Pull Request**
@@ -40,15 +41,25 @@ Open an issue with the `enhancement` label. Describe:
 ```bash
 git clone https://github.com/AAK1767/ClawdMate.git
 cd ClawdMate
+./build.sh          # or .\build.ps1 on Windows
 ```
 
-1. Open `chrome://extensions` in Chrome
-2. Enable **Developer mode**
-3. Click **Load unpacked** → select the `ClawdMate` folder
-4. Navigate to PESU Academy to test
+This builds both browser versions into `build/chrome/` and `build/firefox/`.
 
-After making changes to `content.js` or `panel.css`:
-- Click the refresh icon on the extension card in `chrome://extensions`
+### Chrome
+1. Open `chrome://extensions` → enable **Developer mode**
+2. Click **Load unpacked** → select the `build/chrome` folder
+3. Navigate to PESU Academy to test
+
+### Firefox
+1. Open `about:debugging` → **This Firefox** → **Load Temporary Add-on**
+2. Select `build/firefox/manifest.json`
+3. Navigate to PESU Academy to test
+
+After making changes in `src/` or `platforms/`:
+- Re-run the build script
+- Chrome: click the refresh icon on the extension card
+- Firefox: click **Reload** in `about:debugging`
 - Reload the PESU Academy page
 
 See [DEVELOPER.md](DEVELOPER.md) for architecture details (in this same `docs/` folder).

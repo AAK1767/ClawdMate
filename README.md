@@ -1,6 +1,6 @@
 # ClawdMate
 
-A Chrome extension that adds bulk downloading of course materials from [PESU Academy](https://www.pesuacademy.com/Academy/). Download slides, notes, assignments, question banks, and question answers — merge PDFs, zip files, or download individually — right from the course page.
+A browser extension for **Chrome** and **Firefox** that adds bulk downloading of course materials from [PESU Academy](https://www.pesuacademy.com/Academy/). Download slides, notes, assignments, question banks, and question answers — merge PDFs, zip files, or download individually — right from the course page.
 
 ## Features
 
@@ -18,18 +18,24 @@ A Chrome extension that adds bulk downloading of course materials from [PESU Aca
 
 ### From source (developer mode)
 
-1. Clone this repository:
+1. Clone and build:
    ```bash
    git clone https://github.com/AAK1767/ClawdMate.git
+   cd ClawdMate
+   ./build.sh          # or .\build.ps1 on Windows
    ```
-2. Open Chrome and navigate to `chrome://extensions`
-3. Enable **Developer mode** (toggle in the top-right corner)
-4. Click **Load unpacked** and select the `ClawdMate` folder
-5. The extension icon appears in your toolbar
+
+2. **Chrome**:
+   - Open `chrome://extensions` → enable **Developer mode**
+   - Click **Load unpacked** → select the `build/chrome` folder
+
+3. **Firefox**:
+   - Open `about:debugging` → **This Firefox** → **Load Temporary Add-on**
+   - Select `build/firefox/manifest.json`
 
 ### Prerequisites
 
-- Google Chrome (or any Chromium-based browser)
+- Google Chrome (or Chromium-based browser) **or** Mozilla Firefox 91+
 - A valid PESU Academy student account
 
 ## Usage
@@ -68,29 +74,41 @@ All processing happens in your browser. No data is sent to any third-party serve
 
 ```
 ClawdMate/
-├── manifest.json       # Chrome extension manifest (MV3)
-├── content.js          # Main content script — UI + fetch + merge logic
-├── panel.css           # Styles for the download panel
-├── popup.html          # Extension popup (toolbar icon click)
-├── lib/
-│   ├── pdf-lib.min.js  # PDF merging library (v1.17.1)
-│   └── jszip.min.js    # ZIP creation library (v3.10.1)
-├── icons/
-│   ├── icon16.png
-│   ├── icon48.png
-│   └── icon128.png
-├── LICENSE             # MIT License
+├── src/                         # Shared source (both browsers)
+│   ├── content.js               # Main content script — UI + fetch + merge logic
+│   ├── popup.html               # Extension popup (toolbar icon click)
+│   ├── panel.css                # Styles for the download panel
+│   ├── lib/
+│   │   ├── pdf-lib.min.js       # PDF merging library (v1.17.1)
+│   │   └── jszip.min.js         # ZIP creation library (v3.10.1)
+│   └── icons/
+│       ├── icon16.png
+│       ├── icon48.png
+│       └── icon128.png
+├── platforms/
+│   ├── chrome/
+│   │   └── manifest.json        # Chrome Manifest V3
+│   └── firefox/
+│       ├── manifest.json        # Firefox Manifest V2
+│       └── loader.js            # MAIN-world script injector
+├── build.ps1                    # Build script (Windows)
+├── build.sh                     # Build script (Linux/macOS)
+├── build/                       # Assembled extensions (gitignored)
+│   ├── chrome/
+│   └── firefox/
+├── LICENSE                      # MIT License
 └── docs/
-    ├── CHANGELOG.md        # Release history
-    ├── CODE_OF_CONDUCT.md  # Community standards
-    ├── CONTRIBUTING.md     # Contribution guidelines
-    ├── DEVELOPER.md        # Technical architecture docs
-    └── SECURITY.md         # Security policy
+    ├── CHANGELOG.md             # Release history
+    ├── CODE_OF_CONDUCT.md       # Community standards
+    ├── CONTRIBUTING.md          # Contribution guidelines
+    ├── DEVELOPER.md             # Technical architecture docs
+    └── SECURITY.md              # Security policy
 ```
 
 ## Tech stack
 
-- **Manifest V3** — Chrome extension platform
+- **Chrome**: Manifest V3 — content scripts injected with `"world": "MAIN"`
+- **Firefox**: Manifest V2 — content script injects page-level `<script>` tags via `loader.js`
 - **pdf-lib** v1.17.1 — client-side PDF merging
 - **JSZip** v3.10.1 — client-side ZIP creation
 - **jQuery** — from PESU Academy's page (not bundled)

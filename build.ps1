@@ -1,0 +1,50 @@
+# build.ps1 — Assemble Chrome and Firefox extensions from shared source
+# Usage:
+#   .\build.ps1           # build both
+#   .\build.ps1 chrome    # build Chrome only
+#   .\build.ps1 firefox   # build Firefox only
+
+param(
+    [ValidateSet('all', 'chrome', 'firefox')]
+    [string]$Target = 'all'
+)
+
+$ErrorActionPreference = 'Stop'
+$Root = $PSScriptRoot
+$Src = Join-Path $Root 'src'
+$Platforms = Join-Path $Root 'platforms'
+$Build = Join-Path $Root 'build'
+
+function Build-Extension {
+    param([string]$Name)
+
+    $OutDir = Join-Path $Build $Name
+    $PlatformDir = Join-Path $Platforms $Name
+
+    # Clean output
+    if (Test-Path $OutDir) { Remove-Item -Recurse -Force $OutDir }
+    New-Item -ItemType Directory -Force $OutDir | Out-Null
+
+    # Copy shared source
+    Copy-Item (Join-Path $Src 'content.js')  $OutDir
+    Copy-Item (Join-Path $Src 'popup.html')  $OutDir
+    Copy-Item (Join-Path $Src 'panel.css')   $OutDir
+    Copy-Item -Recurse (Join-Path $Src 'lib')   (Join-Path $OutDir 'lib')
+    Copy-Item -Recurse (Join-Path $Src 'icons') (Join-Path $OutDir 'icons')
+
+    # Copy platform-specific files (manifest.json, loader.js, etc.)
+    Get-ChildItem $PlatformDir -File | ForEach-Object {
+        Copy-Item $_.FullName $OutDir
+    }
+
+    Write-Host "Built $Name -> build/$Name/"
+}
+
+if ($Target -eq 'all' -or $Target -eq 'chrome') {
+    Build-Extension 'chrome'
+}
+if ($Target -eq 'all' -or $Target -eq 'firefox') {
+    Build-Extension 'firefox'
+}
+
+Write-Host 'Done.'

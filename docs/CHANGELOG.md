@@ -5,6 +5,19 @@ All notable changes to ClawdMate will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-03-09
+
+### Added
+- Firefox support (Manifest V2) with `loader.js` for MAIN-world script injection
+- `browser_specific_settings.gecko` in Firefox manifest (ID: `clawdmate@pesuacademy`, min version 91)
+- Monorepo structure: shared source in `src/`, platform-specific files in `platforms/`
+- Build scripts (`build.ps1` for Windows, `build.sh` for Linux/macOS) to assemble both versions
+
+### Changed
+- Moved shared files (`content.js`, `popup.html`, `panel.css`, `lib/`, `icons/`) into `src/`
+- Moved Chrome `manifest.json` into `platforms/chrome/`
+- Updated all documentation for cross-browser monorepo workflow
+
 ## [1.0.0] - 2026-02-25
 
 ### Added

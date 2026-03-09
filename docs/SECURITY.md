@@ -29,7 +29,7 @@ Instead, email the maintainer directly or use GitHub's private vulnerability rep
 
 ## Security considerations
 
-ClawdMate is a client-side Chrome extension. Important notes:
+ClawdMate is a client-side browser extension (Chrome & Firefox). Important notes:
 
 - **No data collection**: The extension does not collect, store, or transmit any user data
 - **No external requests**: All network requests go exclusively to `pesuacademy.com` using your existing session
@@ -42,8 +42,9 @@ ClawdMate is a client-side Chrome extension. Important notes:
 
 The extension requests minimal permissions:
 
-| Permission | Reason |
-|-----------|--------|
-| `host_permissions: pesuacademy.com` | Required to inject the content script and access course APIs |
+| Browser | Permission | Reason |
+|---------|-----------|--------|
+| Chrome | `host_permissions: pesuacademy.com` | Required to inject the content script and access course APIs |
+| Firefox | `permissions: pesuacademy.com` | Same — MV2 uses `permissions` instead of `host_permissions` |
 
 No other permissions (storage, tabs, webRequest, etc.) are requested.

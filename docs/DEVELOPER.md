@@ -1,26 +1,41 @@
 # ClawdMate — Developer Guide
 
-Technical documentation covering the architecture, API flow, and internals of the ClawdMate Chrome extension.
+Technical documentation covering the architecture, API flow, and internals of the ClawdMate browser extension (Chrome & Firefox).
 
 ---
 
 ## Architecture
 
-ClawdMate is a **Manifest V3 Chrome extension** that injects a content script into PESU Academy pages. The content script adds UI elements to the DOM and communicates with PESU Academy's internal APIs using the user's existing session.
+ClawdMate injects a content script into PESU Academy pages. The content script adds UI elements to the DOM and communicates with PESU Academy's internal APIs using the user's existing session.
+
+### Chrome (Manifest V3)
 
 ```
-manifest.json
-  └─ content_scripts
+manifest.json (MV3)
+  └─ content_scripts (world: MAIN)
        ├─ lib/pdf-lib.min.js   (injected first)
        ├─ lib/jszip.min.js     (injected second)
        ├─ content.js           (main logic)
        └─ panel.css            (styles)
 ```
 
-### Execution flow
+Chrome's MV3 supports `"world": "MAIN"`, so libraries and content.js are injected directly into the page context.
+
+### Firefox (Manifest V2)
 
 ```
-Page load → manifest injects scripts at document_idle
+manifest.json (MV2)
+  └─ content_scripts
+       ├─ loader.js            (runs in isolated sandbox)
+       └─ panel.css            (styles)
+```
+
+Firefox content scripts run in an isolated sandbox. `loader.js` bridges this gap by injecting `<script>` tags for `pdf-lib.min.js`, `jszip.min.js`, and `content.js` into the page's MAIN world sequentially.
+
+### Execution flow (both browsers)
+
+```
+Page load → scripts injected at document_idle
   → content.js waits for jQuery (from PESU page)
   → checks for #courselistunit
   → injects "ClawdMate" tab + floating panel
@@ -34,12 +49,14 @@ Page load → manifest injects scripts at document_idle
 
 | File | Purpose |
 |------|---------|
-| `manifest.json` | Extension manifest (MV3). Declares content scripts, permissions, icons, popup. |
-| `content.js` | Core logic: DOM injection, API calls, PDF merge, PPTX zip, caching, tab observer. |
-| `panel.css` | All styles for the download panel. PESU-themed colors (#0091CD, #1d3756). |
-| `popup.html` | Toolbar popup. Shows extension info and usage hint. |
-| `lib/pdf-lib.min.js` | pdf-lib v1.17.1 — client-side PDF creation and merging. |
-| `lib/jszip.min.js` | JSZip v3.10.1 — client-side ZIP file generation. |
+| `src/content.js` | Core logic: DOM injection, API calls, PDF merge, PPTX zip, caching, tab observer. |
+| `src/panel.css` | All styles for the download panel. PESU-themed colors (#0091CD, #1d3756). |
+| `src/popup.html` | Toolbar popup. Shows extension info and usage hint. |
+| `src/lib/pdf-lib.min.js` | pdf-lib v1.17.1 — client-side PDF creation and merging. |
+| `src/lib/jszip.min.js` | JSZip v3.10.1 — client-side ZIP file generation. |
+| `platforms/chrome/manifest.json` | Chrome extension manifest (MV3). |
+| `platforms/firefox/manifest.json` | Firefox extension manifest (MV2) with gecko settings. |
+| `platforms/firefox/loader.js` | Injects scripts into page MAIN world via `<script>` tags. |
 
 ---
 
@@ -207,11 +224,26 @@ The extension uses:
 
 ## Development setup
 
-1. Clone the repo and make changes
-2. Go to `chrome://extensions` → enable Developer mode
-3. Click **Load unpacked** → select the project folder
-4. After editing `content.js` or `panel.css`, click the refresh icon on the extension card
-5. Reload the PESU Academy page to see changes
+1. Clone the repo
+2. Run the build script:
+   ```bash
+   ./build.sh          # Linux/macOS
+   .\build.ps1         # Windows
+   ```
+   This assembles `build/chrome/` and `build/firefox/` from shared source + platform overrides.
+3. **Chrome**: `chrome://extensions` → Developer mode → **Load unpacked** → select `build/chrome`
+4. **Firefox**: `about:debugging` → This Firefox → **Load Temporary Add-on** → select `build/firefox/manifest.json`
+5. After editing files in `src/` or `platforms/`, re-run the build script
+6. Chrome: click the refresh icon on the extension card. Firefox: click **Reload** in `about:debugging`
+7. Reload the PESU Academy page to see changes
+
+### Build targets
+
+```bash
+./build.sh           # both
+./build.sh chrome    # chrome only
+./build.sh firefox   # firefox only
+```
 
 ### Debugging
 
@@ -229,4 +261,4 @@ The extension uses:
 | pdf-lib | 1.17.1 | ~525 KB | PDF merging | MIT |
 | JSZip | 3.10.1 | ~98 KB | ZIP creation | MIT / GPLv3 |
 
-Both are bundled locally in `lib/` — no CDN calls at runtime.
+Both are bundled locally in `src/lib/` — no CDN calls at runtime.
