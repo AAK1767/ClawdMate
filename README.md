@@ -46,6 +46,8 @@ A browser extension for **Chrome** and **Firefox** that adds bulk downloading of
 4. Select a resource type: **Slides**, **Notes**, **Assignments**, **QB**, or **QA**
 5. Click **Merge & Download** to get everything, or click individual files
 
+> **Note:** Please disable any download managers (IDM, FDM, JDownloader, etc.) or their browser extensions before using ClawdMate. They intercept file downloads and interfere with PDF merging and ZIP bundling.
+
 ## How it works
 
 The extension injects a content script into PESU Academy pages. It uses the academy's internal APIs (the same ones the website uses) to discover all downloadable files for the active unit, then fetches and processes them client-side.
