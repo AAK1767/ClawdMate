@@ -43,10 +43,11 @@ function Build-Extension {
     Write-Host "Built $Name -> build/$Name/"
 
     if ($Zip) {
-        $ZipFile = Join-Path $Build "ClawdMate-$Name.zip"
-        if (Test-Path $ZipFile) { Remove-Item -Force $ZipFile }
-        Compress-Archive -Path (Join-Path $OutDir '*') -DestinationPath $ZipFile
-        Write-Host "Packaged $Name -> build/ClawdMate-$Name.zip"
+        $Ext = if ($Name -eq 'firefox') { 'xpi' } else { 'zip' }
+        $PkgFile = Join-Path $Build "ClawdMate-$Name.$Ext"
+        if (Test-Path $PkgFile) { Remove-Item -Force $PkgFile }
+        Compress-Archive -Path (Join-Path $OutDir '*') -DestinationPath $PkgFile
+        Write-Host "Packaged $Name -> build/ClawdMate-$Name.$Ext"
     }
 }
 

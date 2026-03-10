@@ -39,10 +39,10 @@ jobs:
           cd build/chrome
           zip -r "../../ClawdMate-Chrome-${{ steps.version.outputs.tag }}.zip" .
 
-      - name: Package Firefox extension
+      - name: Package Firefox extension (.xpi)
         run: |
           cd build/firefox
-          zip -r "../../ClawdMate-Firefox-${{ steps.version.outputs.tag }}.zip" .
+          zip -r "../../ClawdMate-Firefox-${{ steps.version.outputs.tag }}.xpi" .
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
@@ -59,10 +59,10 @@ jobs:
             4. Click **Load unpacked** → select the unzipped folder
 
             ### Firefox
-            1. Download **ClawdMate-Firefox-${{ steps.version.outputs.tag }}.zip**
-            2. Open `about:debugging` → **This Firefox** → **Load Temporary Add-on**
-            3. Select `manifest.json` inside the unzipped folder
+            1. Download **ClawdMate-Firefox-${{ steps.version.outputs.tag }}.xpi**
+            2. Open Firefox → `about:addons` → gear icon ⚙️ → **Install Add-on From File**
+            3. Select the downloaded `.xpi` file
           files: |
             ClawdMate-Chrome-${{ steps.version.outputs.tag }}.zip
-            ClawdMate-Firefox-${{ steps.version.outputs.tag }}.zip
+            ClawdMate-Firefox-${{ steps.version.outputs.tag }}.xpi
           generate_release_notes: true
