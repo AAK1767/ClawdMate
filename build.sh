@@ -36,14 +36,10 @@ build_extension() {
   echo "Built $name -> build/$name/"
 
   if $ZIP; then
-    if [ "$name" = "firefox" ]; then
-      local pkg="$BUILD/ClawdMate-${name}.xpi"
-    else
-      local pkg="$BUILD/ClawdMate-${name}.zip"
-    fi
-    rm -f "$pkg"
-    (cd "$out" && zip -r "$pkg" .)
-    echo "Packaged $name -> $(basename "$pkg")"
+    local zipfile="$BUILD/ClawdMate-${name}.zip"
+    rm -f "$zipfile"
+    (cd "$out" && zip -r "$zipfile" .)
+    echo "Packaged $name -> ClawdMate-${name}.zip"
   fi
 }
 

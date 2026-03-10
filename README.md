@@ -16,15 +16,22 @@ A browser extension for **Chrome** and **Firefox** that adds bulk downloading of
 
 ## Installation
 
-### Download (easiest)
-
 1. Go to the [Releases page](https://github.com/AAK1767/ClawdMate/releases/latest)
-2. Download the file for your browser:
+2. Download the zip for your browser:
    - **Chrome** → `ClawdMate-Chrome-vX.X.X.zip`
-   - **Firefox** → `ClawdMate-Firefox-vX.X.X.xpi`
-3. Install:
-   - **Chrome**: Unzip the `.zip` → open `chrome://extensions` → enable **Developer mode** → **Load unpacked** → select the unzipped folder
-   - **Firefox**: Open the `.xpi` file directly (or go to `about:addons` → ⚙️ → **Install Add-on From File**)
+   - **Firefox** → `ClawdMate-Firefox-vX.X.X.zip`
+3. Unzip it to a folder
+
+### Chrome (recommended)
+4. Open `chrome://extensions` → enable **Developer mode**
+5. Click **Load unpacked** → select the unzipped folder
+6. The extension stays installed until you remove it
+
+### Firefox
+4. Open `about:debugging` → **This Firefox** → **Load Temporary Add-on**
+5. Select `manifest.json` inside the unzipped folder
+
+> ⚠️ Firefox temporary add-ons are removed when you close Firefox. You'll need to repeat steps 4–5 each time you restart the browser.
 
 ### From source (developer mode)
 
