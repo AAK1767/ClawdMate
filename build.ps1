@@ -1,12 +1,15 @@
 # build.ps1 — Assemble Chrome and Firefox extensions from shared source
 # Usage:
-#   .\build.ps1           # build both
-#   .\build.ps1 chrome    # build Chrome only
-#   .\build.ps1 firefox   # build Firefox only
+#   .\build.ps1                # build both
+#   .\build.ps1 chrome         # build Chrome only
+#   .\build.ps1 firefox        # build Firefox only
+#   .\build.ps1 -Zip           # build both + create zip packages
+#   .\build.ps1 chrome -Zip    # build Chrome only + zip
 
 param(
     [ValidateSet('all', 'chrome', 'firefox')]
-    [string]$Target = 'all'
+    [string]$Target = 'all',
+    [switch]$Zip
 )
 
 $ErrorActionPreference = 'Stop'
@@ -38,6 +41,13 @@ function Build-Extension {
     }
 
     Write-Host "Built $Name -> build/$Name/"
+
+    if ($Zip) {
+        $ZipFile = Join-Path $Build "ClawdMate-$Name.zip"
+        if (Test-Path $ZipFile) { Remove-Item -Force $ZipFile }
+        Compress-Archive -Path (Join-Path $OutDir '*') -DestinationPath $ZipFile
+        Write-Host "Packaged $Name -> build/ClawdMate-$Name.zip"
+    }
 }
 
 if ($Target -eq 'all' -or $Target -eq 'chrome') {

@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `browser_specific_settings.gecko` in Firefox manifest (ID: `clawdmate@pesuacademy`, min version 91)
 - Monorepo structure: shared source in `src/`, platform-specific files in `platforms/`
 - Build scripts (`build.ps1` for Windows, `build.sh` for Linux/macOS) to assemble both versions
+- GitHub Actions workflow for automated releases — push a version tag to create a release with pre-built zips
+- `--zip` / `-Zip` flag on build scripts to produce ready-to-distribute zip packages locally
 
 ### Changed
 - Moved shared files (`content.js`, `popup.html`, `panel.css`, `lib/`, `icons/`) into `src/`
